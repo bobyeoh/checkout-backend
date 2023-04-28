@@ -1,12 +1,9 @@
 package app
 
 import (
-	"os"
-
 	"checkout-backend/app/validation"
 
 	"github.com/labstack/echo/v4"
-	"github.com/labstack/gommon/log"
 	"gorm.io/gorm"
 )
 
@@ -19,8 +16,8 @@ type Server struct {
 // NewServer godoc
 func NewServer(mysql *gorm.DB) *Server {
 	e := echo.New()
-	e.Logger.SetLevel(log.INFO)
-	e.Logger.SetOutput(os.Stdout)
+	// e.Logger.SetLevel(log.INFO)
+	// e.Logger.SetOutput(os.Stdout)
 	e.Validator = validation.Init()
 	return &Server{
 		Echo:  e,

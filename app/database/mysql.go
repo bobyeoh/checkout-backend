@@ -2,6 +2,9 @@ package database
 
 import (
 	"checkout-backend/app/config"
+	"log"
+	"os"
+	"time"
 
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -10,11 +13,20 @@ import (
 
 // InitMYSQL godoc
 func InitMYSQL() *gorm.DB {
-	db, err := gorm.Open(mysql.Open(config.GetConfig().MYSQL), &gorm.Config{})
+	logger := logger.New(
+		log.New(os.Stdout, "\r\n", log.LstdFlags),
+		logger.Config{
+			SlowThreshold:             time.Second,
+			LogLevel:                  logger.Info,
+			IgnoreRecordNotFoundError: false,
+			ParameterizedQueries:      false,
+			Colorful:                  false,
+		},
+	)
+	db, err := gorm.Open(mysql.Open(config.GetConfig().MYSQL), &gorm.Config{Logger: logger})
 	if err != nil {
 		panic(err.Error())
 	}
-	db.Logger.LogMode(logger.Silent)
 	Build(db)
 	return db
 }
