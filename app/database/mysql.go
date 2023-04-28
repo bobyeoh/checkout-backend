@@ -1,8 +1,6 @@
 package database
 
 import (
-	"os"
-
 	"checkout-backend/app/config"
 
 	"gorm.io/driver/mysql"
@@ -16,9 +14,7 @@ func InitMYSQL() *gorm.DB {
 	if err != nil {
 		panic(err.Error())
 	}
-	if os.Getenv("ENV") != "production" {
-		db.Logger.LogMode(logger.Info)
-	}
+	db.Logger.LogMode(logger.Info)
 	Build(db)
 	return db
 }
