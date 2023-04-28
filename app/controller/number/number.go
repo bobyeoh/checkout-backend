@@ -1,8 +1,6 @@
 package number
 
 import (
-	"net/http"
-
 	"checkout-backend/app"
 	"checkout-backend/app/controller"
 	"checkout-backend/app/controller/number/errorCode"
@@ -12,6 +10,8 @@ import (
 	"checkout-backend/app/service"
 	"checkout-backend/app/utils"
 	"checkout-backend/app/validation"
+	"encoding/json"
+	"net/http"
 
 	"github.com/labstack/echo/v4"
 )
@@ -67,6 +67,8 @@ func (handler *NumberHandler) Update(c echo.Context) error {
 		errorMessage := validation.ProcessError(err)
 		return utils.Fail(c, http.StatusBadRequest, controller.ParametersError, errorMessage.Error())
 	}
+	j, _ := json.Marshal(requestBody)
+	log.Info(string(j))
 	numberService := service.InitNumber(handler.server.MySQL)
 	if err := numberService.Update(requestBody.Count); err != nil {
 		log.Errorf("Failed to update: %v", err.Error())
