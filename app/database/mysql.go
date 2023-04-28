@@ -14,7 +14,7 @@ func InitMYSQL() *gorm.DB {
 	if err != nil {
 		panic(err.Error())
 	}
-	db.Logger.LogMode(logger.Info)
+	db.Logger.LogMode(logger.Silent)
 	Build(db)
 	return db
 }
